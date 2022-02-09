@@ -17,6 +17,12 @@ import AttractionsMap from "./attractions/AttractionsMap";
 import GlobalStyles from "../styles/GlobalStyles";
 import PageNotFound from "./PageNotFound";
 import Home from "./Home";
+import CreateStory from "./stories/CreateStroy";
+import StoriesList from "./stories/StoriesList";
+import Story from "./stories/Story";
+import UserStories from "./stories/UserStories";
+import StoryEdit from "./stories/StoryEdit";
+import StoriesTag from "./stories/StoriesTag";
 
 class App extends React.Component {
   componentDidMount() {
@@ -39,6 +45,13 @@ class App extends React.Component {
           <Route exact path="/attractions/:id/edit" component={Edit} />
           <Route exact path="/attractions/:id" component={AttractionDetails} />
           <Route exact path="/myattractions" component={myAttractions} />
+          <Route exact path="/myattractions" component={myAttractions} />
+          <Route exact path="/stories/new" component={CreateStory} />
+          <Route exact path="/stories/tag/:tag" component={StoriesTag} />
+          <Route exact path="/stories/:id" component={Story} />
+          <Route exact path="/user/:id/stories" component={UserStories} />
+          <Route exact path="/user/stories/:id/edit" component={StoryEdit} />
+          <Route exact path="/stories" component={StoriesList} />
           <Route path="*" component={PageNotFound} />
         </Switch>
       </Router>

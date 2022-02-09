@@ -32,6 +32,9 @@ const Header = (props) => {
         <Link className="link" to="/attractions">
           Attractions
         </Link>
+        <Link className="link" to="/stories">
+          Stories
+        </Link>
         <Link className="link" to="/attractions/map">
           Map
         </Link>
@@ -40,6 +43,10 @@ const Header = (props) => {
         </Link>
         <Link className="link" to="/create">
           Add Attraction
+        </Link>
+
+        <Link className="link" to="/stories/new">
+          Create Story
         </Link>
 
         <Link className="link" to="/myattractions">

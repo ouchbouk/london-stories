@@ -7,13 +7,15 @@ const MongoStore = require("connect-mongo");
 const path = require("path");
 const cors = require("cors");
 
+
 const attractionsRouter = require("./routers/attractions");
 const authRouter = require("./routers/auth");
+const storiesRouter = require("./routers/stories");
 
 const app = express();
 
-const dbURL = `mongodb+srv://db-user:${process.env.DB_PASSWORD}@cluster0.1i2oo.mongodb.net/arcane-london?retryWrites=true&w=majority`;
-
+// const dbURL = `mongodb+srv://db-user:${process.env.DB_PASSWORD}@cluster0.1i2oo.mongodb.net/arcane-london?retryWrites=true&w=majority`;
+const dbURL = "mongodb://localhost:27017/arcane-london";
 const store = MongoStore.create({ mongoUrl: dbURL, touchAfter: 24 * 3600 });
 
 mongoose.connect(dbURL, { useNewUrlParser: true }, () => {
@@ -47,6 +49,8 @@ app.use(express.static(path.join(__dirname, "client/build")));
 app.use("/api", authRouter);
 
 app.use("/api", attractionsRouter);
+
+app.use("/api", storiesRouter);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));

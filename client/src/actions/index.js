@@ -349,3 +349,110 @@ export const getAttractionCount = () => {
     })();
   };
 };
+
+// ----------------- STORIES ACTIONS -------------------- //
+
+export const createStory = (story) => {
+  return (dispatch) => {
+    (async () => {
+      let { data } = await instance.post("/stories", story);
+      console.log(data);
+      dispatch({ type: "CREATE_STORY", payload: data });
+      history.push("/stories");
+    })();
+  };
+};
+
+export const getAllStories = () => {
+  return (dispatch) => {
+    (async () => {
+      let { data } = await instance.get("/stories");
+      dispatch({ type: "GET_STORIES", payload: data });
+    })();
+  };
+};
+
+export const getStory = (id) => {
+  return (dispatch) => {
+    (async () => {
+      let { data } = await instance.get(`/stories/${id}`);
+      dispatch({ type: "GET_STORY", payload: data });
+    })();
+  };
+};
+
+export const likeStory = (id) => {
+  return (dispatch) => {
+    (async () => {
+      let { data } = await instance.patch(`/stories/${id}/likes`);
+      dispatch({ type: "GET_STORY", payload: data });
+    })();
+  };
+};
+
+export const dislikeStory = (id) => {
+  return (dispatch) => {
+    (async () => {
+      let { data } = await instance.patch(`/stories/${id}/dislikes`);
+      dispatch({ type: "GET_STORY", payload: data });
+    })();
+  };
+};
+
+export const addComment = (id, comment) => {
+  return (dispatch) => {
+    (async () => {
+      let { data } = await instance.post(`/stories/${id}/comments`, {
+        comment,
+      });
+      dispatch({ type: "GET_STORY", payload: data });
+    })();
+  };
+};
+
+export const getUserStories = (id) => {
+  return (dispatch) => {
+    (async () => {
+      let { data } = await instance.get(`/user/${id}/stories`);
+      dispatch({ type: "GET_STORIES", payload: data });
+    })();
+  };
+};
+
+export const getUserStory = (id) => {
+  return (dispatch) => {
+    (async () => {
+      let { data } = await instance.get(`/user/stories/${id}`);
+      dispatch({ type: "GET_STORY", payload: data });
+    })();
+  };
+};
+
+export const editStory = (id, story) => {
+  return (dispatch) => {
+    (async () => {
+      let { data } = await instance.put(`/user/stories/${id}`, story);
+      dispatch({ type: "GET_STORY", payload: data });
+      history.push(`/stories/${id}`);
+    })();
+  };
+};
+
+export const getStoriesByTag = (tag) => {
+  return (dispatch) => {
+    (async () => {
+      let { data } = await instance.get(`/stories/tag/${tag}`);
+      dispatch({ type: "GET_STORIES", payload: data });
+    })();
+  };
+};
+
+export const searchStories = (query) => {
+  return (dispatch) => {
+    (async () => {
+      let { data } = await instance.get(`/stories/search?q=${query}`);
+      dispatch({ type: "ATTRACTIONS_SEARCH_RESULTS", payload: data });
+      dispatch({ type: "QUERY", payload: query });
+    })();
+  };
+};

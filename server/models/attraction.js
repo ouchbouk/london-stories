@@ -32,6 +32,7 @@ const attractionSchema = new mongoose.Schema({
   visited: { type: Number, default: 0 },
   wantToVisit: { type: Number, default: 0 },
   averageRating: { type: Number, default: 0 },
+  stories: [{ type: mongoose.Types.ObjectId, ref: "Story" }],
 });
 
 module.exports = mongoose.model("Attraction", attractionSchema);

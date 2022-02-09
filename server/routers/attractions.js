@@ -15,7 +15,6 @@ const Attraction = require("../models/attraction");
 
 const { isLoggedIn, isAuthor } = require("../middleware");
 
-//ATTRACTIONS
 
 router.post(
   "/attractions",

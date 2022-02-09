@@ -11,8 +11,7 @@ import thunk from "redux-thunk";
 
 import reducers from "./reducers";
 import App from "./components/App";
-require('dotenv').config()
-
+require("dotenv").config();
 
 const persistConfig = {
   key: "root",

@@ -53,7 +53,6 @@ class Edit extends React.Component {
   };
   onTermChange = (e) => {
     this.setState({ term: e.target.value });
-
     _.debounce(() => {
       this.props.getAdresses(this.state.term);
       console.log(this.props.addresses);

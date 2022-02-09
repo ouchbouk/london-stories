@@ -8,6 +8,7 @@ const User = new Schema({
   beenThere: [{ type: mongoose.Types.ObjectId, ref: "Attraction" }],
   wantToVisit: [{ type: mongoose.Types.ObjectId, ref: "Attraction" }],
   list: [{ type: mongoose.Types.ObjectId, ref: "Attraction" }],
+  stories: [{ type: mongoose.Types.ObjectId, ref: "Story" }],
 });
 
 User.plugin(passportLocalMongoose);
