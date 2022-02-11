@@ -451,8 +451,9 @@ export const searchStories = (query) => {
   return (dispatch) => {
     (async () => {
       let { data } = await instance.get(`/stories/search?q=${query}`);
-      dispatch({ type: "ATTRACTIONS_SEARCH_RESULTS", payload: data });
-      dispatch({ type: "QUERY", payload: query });
+      // dispatch({ type: "ATTRACTIONS_SEARCH_RESULTS", payload: data });
+      // dispatch({ type: "QUERY", payload: query });
+      console.log(data)
     })();
   };
 };

@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { Link } from "react-router-dom";
-import { searchAttractions } from "../../actions";
+import { searchAttractions, searchStories } from "../../actions";
 import {
   Container as ResultsWrapper,
   AttractionCard,
@@ -19,13 +19,6 @@ import { Rating } from "../styledComponents/attractionDetails";
 import StarRatings from "react-star-ratings";
 
 class Search extends React.Component {
-  onQueryChange = (e) => {
-    this.setState({ query: e.target.value });
-    _.debounce(() => {
-      this.props.searchAttractions(this.state.query);
-    }, 300)();
-  };
-
   renderAttractions = () => {
     if (!this.props.attractions) return "";
 
@@ -43,34 +36,38 @@ class Search extends React.Component {
 
     return (
       <ResultsWrapper>
-        {this.props.attractions.map(({ name, description, _id, images,averageRating }) => {
-          return (
-            <AttractionCard key={_id}>
-              <Link
-                style={{ textDecoration: "none" }}
-                to={`/attractions/${_id}`}
-              >
-                <AttractionImg src={images[0].url} alt="pic" />
-                <CardContent>
-                  {<p className="name">{name}</p>}
-                  <Rating>
-                    <StarRatings
-                      rating={averageRating}
-                      starDimension="1.8rem"
-                      starSpacing="1px"
-                      starRatedColor="#065f46"
-                    />
-                  </Rating>
-                  <p className="subtitle">{description.substring(0, 101)}...</p>
+        {this.props.attractions.map(
+          ({ name, description, _id, images, averageRating }) => {
+            return (
+              <AttractionCard key={_id}>
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to={`/attractions/${_id}`}
+                >
+                  <AttractionImg src={images[0].url} alt="pic" />
+                  <CardContent>
+                    {<p className="name">{name}</p>}
+                    <Rating>
+                      <StarRatings
+                        rating={averageRating}
+                        starDimension="1.8rem"
+                        starSpacing="1px"
+                        starRatedColor="#065f46"
+                      />
+                    </Rating>
+                    <p className="subtitle">
+                      {description.substring(0, 101)}...
+                    </p>
 
-                  <CenterText>
-                    <ContinueBtn>Read More &#8594;</ContinueBtn>
-                  </CenterText>
-                </CardContent>
-              </Link>
-            </AttractionCard>
-          );
-        })}
+                    <CenterText>
+                      <ContinueBtn>Read More &#8594;</ContinueBtn>
+                    </CenterText>
+                  </CardContent>
+                </Link>
+              </AttractionCard>
+            );
+          }
+        )}
       </ResultsWrapper>
     );
   };
@@ -96,5 +93,5 @@ export default connect(
   ({ attractionsSearchResults, query }) => {
     return { attractions: _.values(attractionsSearchResults), query };
   },
-  { searchAttractions }
+  { searchAttractions, searchStories }
 )(Search);
