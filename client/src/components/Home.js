@@ -13,13 +13,13 @@ const Home = () => {
   return (
     <Container>
       <Hero>
-        <HeadingPrimary>Mysterious London</HeadingPrimary>
+        <HeadingPrimary>London Stories</HeadingPrimary>
         <HeadingSecondary>
-          discover places you never thought existed
-          <div style={{textAlign:'center',marginTop:'10px'}}>in london</div>
+          Read Stories Inspired By Real Locations
+          {/* <div style={{textAlign:'center',marginTop:'10px'}}>in london</div> */}
         </HeadingSecondary>
         <Button as={Link} to="/attractions">
-          discover Now
+          Start Reading
         </Button>
       </Hero>
     </Container>

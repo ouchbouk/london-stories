@@ -451,9 +451,16 @@ export const searchStories = (query) => {
   return (dispatch) => {
     (async () => {
       let { data } = await instance.get(`/stories/search?q=${query}`);
-      // dispatch({ type: "ATTRACTIONS_SEARCH_RESULTS", payload: data });
-      // dispatch({ type: "QUERY", payload: query });
-      console.log(data)
+      dispatch({ type: "GET_STORIES", payload: data });
+    })();
+  };
+};
+
+export const getStoriesByLocation = (locationId) => {
+  return (dispatch) => {
+    (async () => {
+      let { data } = await instance.get(`/stories/attraction/${locationId}`);
+      dispatch({ type: "GET_STORIES", payload: data });
     })();
   };
 };

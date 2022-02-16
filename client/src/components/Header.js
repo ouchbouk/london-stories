@@ -20,9 +20,8 @@ const Header = (props) => {
       theme={`${location.pathname === "/" ? "white" : "green"}`}
     >
       <Link className="brand" to="/">
-        Mysterious London
+        London Stories
       </Link>
-
       <div
         onClick={() => {
           setToggle(!toggle);

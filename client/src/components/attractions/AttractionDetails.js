@@ -15,6 +15,7 @@ import {
   deleteAttraction,
   getUserAttractions,
   removeFromList,
+  getStoriesByLocation,
 } from "../../actions";
 import { Link } from "react-router-dom";
 import {
@@ -60,6 +61,7 @@ import validateReview from "../../validation/validateReview";
 import { MainContainer } from "../styledComponents/general";
 import history from "../../history";
 import { Error } from "../styledComponents/authPage";
+import _ from "lodash";
 
 Modal.setAppElement("#root");
 
@@ -82,6 +84,7 @@ class AttractionDetails extends React.Component {
 
   componentDidMount() {
     this.props.getAttraction(this.props.match.params.id);
+    this.props.getStoriesByLocation(this.props);
     if (this.props.user.loggedIn) this.props.getUserAttractions();
     window.scrollTo(0, 0);
   }
@@ -90,7 +93,6 @@ class AttractionDetails extends React.Component {
     if (this.props.attraction) {
       let imagesLength = this.props.attraction.images.length;
       let container = this.imgsContainer.current;
-
       if (
         this.state.loadedImages === imagesLength &&
         container.scrollWidth > container.clientWidth
@@ -103,7 +105,6 @@ class AttractionDetails extends React.Component {
 
   renderReviews = () => {
     if (this.props.attraction.reviews.length < 1) return "";
-
     return (
       <Reviews>
         <CenterText>
@@ -131,7 +132,6 @@ class AttractionDetails extends React.Component {
                         </DeleteButton>
                       )}
                   </Author>
-
                   <Rating>
                     <StarRatings
                       rating={stars}
@@ -200,7 +200,6 @@ class AttractionDetails extends React.Component {
         <form onSubmit={handleSubmitReview} method="post">
           <div>
             <Label>How was your experience?</Label>
-
             <Stars>
               <StarRatings
                 rating={this.state.stars}
@@ -418,7 +417,6 @@ class AttractionDetails extends React.Component {
         );
       });
     }
-
     return "";
   };
   sideScroll(element, speed, distance, step) {
@@ -430,8 +428,6 @@ class AttractionDetails extends React.Component {
       widths.push(images[i].clientWidth);
     }
     console.log(widths);
-
-    
 
     let scrollAmount = 0;
     const slideTimer = setInterval(() => {
@@ -455,6 +451,7 @@ class AttractionDetails extends React.Component {
         averageRating,
         reviews,
       } = this.props.attraction;
+      this.props.getStoriesByLocation(_id);
       return (
         <div>
           <MainContainer>
@@ -521,7 +518,6 @@ class AttractionDetails extends React.Component {
               <MapContainer>
                 <Map geocode={geocode} />
               </MapContainer>
-
               {this.renderAddReview()}
               {this.renderReviews()}
             </SmallContainer>
@@ -533,17 +529,41 @@ class AttractionDetails extends React.Component {
     }
   };
 
+  renderStories = () => {
+    let stories = this.props.stories;
+
+    if (!stories) return <div>Loading</div>;
+    if (stories.length === 0) return <div>No Stories</div>;
+    return (
+      <ul>
+        {stories.map(({ title, _id }, i) => {
+          return (
+            <li key={i}>
+              <Link to={`/stories/${_id}`}>{title}</Link>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
+
   render() {
-    return <div>{this.renderAttraction()}</div>;
+    return (
+      <div>
+        {this.renderAttraction()}
+        {this.renderStories()}
+      </div>
+    );
   }
 }
 
 export default connect(
-  ({ attractions, user, flashMessage }, ownProps) => {
+  ({ attractions, user, flashMessage, stories }, ownProps) => {
     return {
       attraction: attractions[ownProps.match.params.id],
       user,
       flashMessage: flashMessage.data,
+      stories: _.values(stories),
     };
   },
   {
@@ -556,5 +576,6 @@ export default connect(
     deleteAttraction,
     getUserAttractions,
     removeFromList,
+    getStoriesByLocation,
   }
 )(AttractionDetails);

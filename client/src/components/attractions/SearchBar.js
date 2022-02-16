@@ -6,14 +6,13 @@ import { searchAttractions, emptyQuery, searchStories } from "../../actions";
 
 class SearchBar extends React.Component {
   state = {
-    searchBy: "attraction",
     query: "",
   };
 
   onQueryChange = (e) => {
     this.setState({ query: e.target.value });
     _.debounce(() => {
-      this.state.searchBy === "attraction"
+      this.props.searchBy === "attraction"
         ? this.props.searchAttractions(this.state.query)
         : this.props.searchStories(this.state.query);
     }, 300)();
@@ -22,30 +21,6 @@ class SearchBar extends React.Component {
   render() {
     return (
       <div>
-        <div style={{ display: "flex", marginBottom: "12px", gap: "20px" }}>
-          <div>
-            <label style={{ marginRight: "8px" }}>Attraction</label>
-            <input
-              type="radio"
-              name="search-by"
-              onChange={() => {
-                this.setState({ searchBy: "attraction" });
-              }}
-              checked={this.state.searchBy === "attraction" ? true : false}
-            />
-          </div>
-          <div>
-            <label style={{ marginRight: "8px" }}>Story</label>
-            <input
-              type="radio"
-              name="search-by"
-              onChange={() => {
-                this.setState({ searchBy: "story" });
-              }}
-              checked={this.state.searchBy === "story" ? true : false}
-            />
-          </div>
-        </div>
         <Input
           placeholder="Look for your next destination!!"
           onChange={this.onQueryChange}

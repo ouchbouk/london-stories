@@ -42,7 +42,7 @@ export const AttractionCard = styled.figure`
       transform: translateY(0);
     }
   }
-
+  border-radius: 12px;
   width: 27rem;
   background-color: rgba(255, 255, 255, 0.8);
   overflow: hidden;

@@ -17,7 +17,11 @@ const UserStories = (props) => {
   return (
     <div>
       {stories.map(({ title, _id }) => {
-        return <Link to={`/stories/${_id}`}>{title}</Link>;
+        return (
+          <Link key={_id} to={`/stories/${_id}`}>
+            {title}
+          </Link>
+        );
       })}
     </div>
   );

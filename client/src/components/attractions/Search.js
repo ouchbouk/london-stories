@@ -19,6 +19,24 @@ import { Rating } from "../styledComponents/attractionDetails";
 import StarRatings from "react-star-ratings";
 
 class Search extends React.Component {
+  state = {
+    searchBy: "attraction",
+    query: "",
+  };
+
+  renderStories = () => {
+    if (this.props.stories && this.props.stories.length === 0)
+      return (
+        <ul style={{ listStyle: "none" }}>
+          {this.props.stories.map(({ title, _id }) => (
+            <li>
+              <Link to={`/stories/${_id}`}> {title}</Link>
+            </li>
+          ))}
+        </ul>
+      );
+  };
+
   renderAttractions = () => {
     if (!this.props.attractions) return "";
 
@@ -72,8 +90,6 @@ class Search extends React.Component {
     );
   };
 
-  render;
-
   render() {
     return (
       <MainContainer>
@@ -81,17 +97,49 @@ class Search extends React.Component {
           <Title>Search</Title>
         </CenterText>
         <BarContainer>
-          <SearchBar />
+          <div style={{ display: "flex", marginBottom: "12px", gap: "20px" }}>
+            <div>
+              <label style={{ marginRight: "8px" }}>Attraction</label>
+              <input
+                type="radio"
+                name="search-by"
+                onChange={() => {
+                  this.setState({ searchBy: "attraction" });
+                }}
+                checked={this.state.searchBy === "attraction" ? true : false}
+              />
+            </div>
+            <div>
+              <label style={{ marginRight: "8px" }}>Story</label>
+              <input
+                type="radio"
+                name="search-by"
+                onChange={() => {
+                  this.setState({ searchBy: "story" });
+                }}
+                checked={this.state.searchBy === "story" ? true : false}
+              />
+            </div>
+          </div>
+          <SearchBar searchBy={this.state.searchBy} />
         </BarContainer>
-        <div>{this.renderAttractions()}</div>
+
+        <div>
+          {this.state.searchBy === "attraction" && this.renderAttractions()}
+        </div>
+        <div>{this.state.searchBy === "story" && this.renderStories()}</div>
       </MainContainer>
     );
   }
 }
 
 export default connect(
-  ({ attractionsSearchResults, query }) => {
-    return { attractions: _.values(attractionsSearchResults), query };
+  ({ attractionsSearchResults, query, stories }) => {
+    return {
+      attractions: _.values(attractionsSearchResults),
+      query,
+      stories: _.values(stories),
+    };
   },
   { searchAttractions, searchStories }
 )(Search);

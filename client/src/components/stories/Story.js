@@ -10,13 +10,10 @@ class Story extends React.Component {
   componentDidMount() {
     this.props.getStory(this.props.match.params.id);
   }
-
   renderEditButton(authorId, _id) {
     if (this.props.user.id !== authorId) return <div />;
-
     return <Link to={`/user/stories/${_id}/edit`}>Edit</Link>;
   }
-
   render() {
     let story = this.props.story;
     if (!story) return "LOADING...";
@@ -49,7 +46,10 @@ class Story extends React.Component {
           ))}
         </ul>
         <p>{body}</p>
-        <p>Location: {location.name}</p>
+        <p>
+          Location:{" "}
+          <Link to={`/attractions/${location._id}`}>{location.name}</Link>
+        </p>
         <h3>likes: {likes.length}</h3>
         <h3>dislikes: {dislikes.length}</h3>
         <button
@@ -67,7 +67,7 @@ class Story extends React.Component {
           Dislike
         </button>
         <div>
-          <label style={{ display: "block" }}>Comment</label>
+          <label style={{ display: "block" }}>Comment:</label>
           <textarea
             value={this.state.comment}
             onChange={(e) => {
@@ -85,8 +85,22 @@ class Story extends React.Component {
           </button>
         </div>
         <ul>
-          {comments.map(({ content }, i) => (
-            <li key={i}>{content}</li>
+          {comments.map(({ content, author }, i) => (
+            <li key={i}>
+              {content}
+              {this.props.user.loggedIn && this.props.user.id === author && (
+                <button
+                  // onClick={() => {
+                  //   this.props.deleteAttrationReview({
+                  //     attractionId: this.props.attraction._id,
+                  //     reviewId: _id,
+                  //   });
+                  // }}
+                >
+                  delete
+                </button>
+              )}
+            </li>
           ))}
         </ul>
       </div>
