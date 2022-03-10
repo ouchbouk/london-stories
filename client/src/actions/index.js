@@ -8,7 +8,6 @@ let instance = axios.create({
 
 function dispatchMessage(dispatch, { type, payload }) {
   dispatch({ type, payload });
-
   setTimeout(() => {
     dispatch({ type, payload: "" });
   }, 3000);
@@ -410,6 +409,18 @@ export const addComment = (id, comment) => {
   };
 };
 
+export const deteteStoryComment = ({ commentId, sotryId }) => {
+  return (dispatch) => {
+    (async () => {
+      let { data } = await instance.delete(
+        `/stories/${sotryId}/comments/${commentId}`
+      );
+      dispatch({ type: "GET_STORY", payload: data });
+    })();
+  };
+};
+
+
 export const getUserStories = (id) => {
   return (dispatch) => {
     (async () => {
@@ -464,3 +475,4 @@ export const getStoriesByLocation = (locationId) => {
     })();
   };
 };
+

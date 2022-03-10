@@ -16,7 +16,6 @@ const app = express();
 
 // const dbURL = `mongodb+srv://db-user:${process.env.DB_PASSWORD}@cluster0.1i2oo.mongodb.net/arcane-london?retryWrites=true&w=majority`;
 const dbURL = "mongodb://localhost:27017/arcane-london";
-const store = MongoStore.create({ mongoUrl: dbURL, touchAfter: 24 * 3600 });
 
 mongoose.connect(dbURL, { useNewUrlParser: true }, () => {
   console.log("DATABASE CONNECTION ESTABLISHED");
@@ -25,6 +24,7 @@ mongoose.connect(dbURL, { useNewUrlParser: true }, () => {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+const store = MongoStore.create({ mongoUrl: dbURL, touchAfter: 24 * 3600 });
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 app.use(

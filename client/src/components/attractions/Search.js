@@ -76,7 +76,6 @@ class Search extends React.Component {
                     <p className="subtitle">
                       {description.substring(0, 101)}...
                     </p>
-
                     <CenterText>
                       <ContinueBtn>Read More &#8594;</ContinueBtn>
                     </CenterText>

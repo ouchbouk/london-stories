@@ -136,7 +136,7 @@ export const HeadingSecondary = styled.h2`
   display: block;
   font-size: 1.8rem;
   font-weight: 400;
-  letter-spacing: 0.35rem;
+  letter-spacing: 0.1rem;
   animation-name: moveInRight;
   animation-duration: 1s;
   animation-timing-function: ease-out;

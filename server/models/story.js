@@ -29,7 +29,7 @@ const storySchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   comments: [
     {
-      author: mongoose.Types.ObjectId,
+      author: { type: mongoose.Types.ObjectId, ref: "User" },
       content: { type: String, required: true },
     },
   ],

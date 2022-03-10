@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
-
 const Story = require("../models/story");
 const User = require("../models/user");
 const Attraction = require("../models/attraction");
 const { isValidObjectId } = require("mongoose");
-
 const { isLoggedIn } = require("../middleware");
 
 router.post("/stories", isLoggedIn, async (req, res) => {
@@ -25,6 +23,7 @@ router.post("/stories", isLoggedIn, async (req, res) => {
   }
 });
 
+
 router.get("/stories/search", async (req, res) => {
   try {
     let { q } = req.query;
@@ -40,6 +39,7 @@ router.get("/stories/search", async (req, res) => {
   }
 });
 
+
 router.get("/stories", async (req, res) => {
   try {
     let stories = await Story.find({ published: true });
@@ -48,6 +48,8 @@ router.get("/stories", async (req, res) => {
     res.status(500).send("SOMETHING WENT WRONG");
   }
 });
+
+
 
 router.get("/stories/attraction/:id", async (req, res) => {
   try {
@@ -61,6 +63,8 @@ router.get("/stories/attraction/:id", async (req, res) => {
   }
 });
 
+
+
 router.get("/stories/tag/:tag", async (req, res) => {
   try {
     let tag = req.params.tag;
@@ -71,6 +75,8 @@ router.get("/stories/tag/:tag", async (req, res) => {
   }
 });
 
+
+
 router.get("/user/stories", isLoggedIn, async (req, res) => {
   try {
     let user = await User.findOne({ _id: req.user._id });
@@ -80,6 +86,9 @@ router.get("/user/stories", isLoggedIn, async (req, res) => {
     res.status(500).send("SOMETHING WENT WRONG");
   }
 });
+
+
+
 
 router.get("/user/:id/stories", async (req, res) => {
   try {
@@ -92,6 +101,8 @@ router.get("/user/:id/stories", async (req, res) => {
   }
 });
 
+
+
 router.get("/stories/:id", async (req, res) => {
   try {
     let storyId = req.params.id;
@@ -101,11 +112,14 @@ router.get("/stories/:id", async (req, res) => {
     if (!story) res.send("STORY NOT FOUND");
     await story.populate("locationId");
     await story.populate("author", "username");
+    await story.populate("comments.author");
     res.send(story);
   } catch (error) {
     res.status(500).send("SOMETHING WENT WRONG");
   }
 });
+
+
 
 router.get("/user/stories/:id", isLoggedIn, async (req, res) => {
   try {
@@ -117,11 +131,16 @@ router.get("/user/stories/:id", isLoggedIn, async (req, res) => {
 
     let story = stories.find((story) => story._id.equals(storyId));
     if (!story) return res.send("STORY NOT FOUND");
+    await story.populate("locationId");
+    await story.populate("author", "username");
+    await story.populate("comments.author");
     res.send(story);
   } catch (error) {
     res.status(500).send("SOMETHING WENT WRONG");
   }
 });
+
+
 
 router.delete("/user/stories/:id", isLoggedIn, async (req, res) => {
   try {
@@ -155,11 +174,16 @@ router.put("/user/stories/:id", isLoggedIn, async (req, res) => {
 
     if (!story) return res.send("STORY NOT FOUND");
     await story.populate("author", "username");
+    await story.populate("locationId");
+    await story.populate("comments.author");
     res.send(story);
   } catch (error) {
     res.status(500).send("SOMETHING WENT WRONG");
   }
 });
+
+
+
 
 router.patch("/user/stories/:id/status", isLoggedIn, async (req, res) => {
   try {
@@ -177,12 +201,17 @@ router.patch("/user/stories/:id/status", isLoggedIn, async (req, res) => {
       { published: !story.published },
       { new: true }
     );
-
+    await story.populate("author", "username");
+    await story.populate("locationId");
+    await story.populate("comments.author");
     res.send(updatedStory);
   } catch (error) {
     res.status(500).send("SOMETHING WENT WRONG");
   }
 });
+
+
+
 
 router.patch("/stories/:id/likes", isLoggedIn, async (req, res) => {
   try {
@@ -200,8 +229,9 @@ router.patch("/stories/:id/likes", isLoggedIn, async (req, res) => {
       story.dislikes = dislikes;
       await story.save();
     }
-    await story.populate("author", "username");
     await story.populate("locationId");
+    await story.populate("author", "username");
+    await story.populate("comments.author");
     res.send(story);
   } catch (error) {
     res.status(500).send("SOMETHING WENT WRONG");
@@ -239,8 +269,9 @@ router.patch("/stories/:id/dislikes", isLoggedIn, async (req, res) => {
       story.likes = likes;
       await story.save();
     }
-    await story.populate("author", "username");
     await story.populate("locationId");
+    await story.populate("author", "username");
+    await story.populate("comments.author");
     res.send(story);
   } catch (error) {
     res.status(500).send("SOMETHING WENT WRONG");
@@ -265,7 +296,6 @@ router.post("/stories/:id/comments", isLoggedIn, async (req, res) => {
     let storyId = req.params.id;
     let { comment } = req.body;
     if (!isValidObjectId(storyId)) return res.send("INVDALID ID");
-
     let story = await Story.findOne({ _id: storyId, published: true });
     if (!story) return res.send("STORY NOT FOUND");
     await story.populate("locationId");
@@ -273,10 +303,49 @@ router.post("/stories/:id/comments", isLoggedIn, async (req, res) => {
     let userId = req.user._id;
     story.comments.push({ author: userId, content: comment });
     await story.save();
+    await story.populate("locationId");
+    await story.populate("author", "username");
+    await story.populate("comments.author");
     res.send(story);
   } catch (error) {
     res.status(500).send("SOMETHING WENT WRONG");
   }
 });
+
+
+
+router.delete(
+  "/stories/:id/comments/:comment_id",
+  isLoggedIn,
+  async (req, res) => {
+    try {
+      let storyId = req.params.id;
+      if (!isValidObjectId(storyId)) return res.send("INVDALID ID");
+
+      let story = await Story.findOne({ _id: storyId, published: true });
+      if (!story) return res.send("STORY NOT FOUND");
+      await story.populate("locationId");
+      await story.populate("author", "username");
+      let comments = story.comments.filter((comment) => {
+        if (
+          !comment._id.equals(req.params.comment_id) ||
+          !comment.author.equals(req.user._id)
+        )
+          return true;
+
+        return false;
+      });
+      story.comments = comments;
+   
+      await story.save();
+      await story.populate("locationId");
+      await story.populate("author", "username");
+      await story.populate("comments.author");
+      res.send(story);
+    } catch (error) {
+      res.status(500).send("SOMETHING WENT WRONG");
+    }
+  }
+);
 
 module.exports = router;

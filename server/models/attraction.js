@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const attractionSchema = new mongoose.Schema({
   addedBy: {
     type: mongoose.Types.ObjectId,
@@ -34,5 +33,5 @@ const attractionSchema = new mongoose.Schema({
   averageRating: { type: Number, default: 0 },
   stories: [{ type: mongoose.Types.ObjectId, ref: "Story" }],
 });
-
 module.exports = mongoose.model("Attraction", attractionSchema);
+
