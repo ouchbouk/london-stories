@@ -1,14 +1,11 @@
 import React from "react";
-
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { PersistGate } from "redux-persist/integration/react";
-
 import thunk from "redux-thunk";
-
 import reducers from "./reducers";
 import App from "./components/App";
 require("dotenv").config();
@@ -32,3 +29,4 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
+

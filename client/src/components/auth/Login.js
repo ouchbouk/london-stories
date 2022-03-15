@@ -137,9 +137,7 @@ class Login extends React.Component {
             <Button type="submit">
               {this.state.loading && <LoadingRing />}LOGIN
             </Button>
-
             <CenterText>Or</CenterText>
-
             <LoginGoogle
               text={
                 <GoogleButton>

@@ -27,7 +27,20 @@ class Story extends React.Component {
   }
   renderEditButton(authorId, _id) {
     if (this.props.user.id !== authorId) return <div />;
-    return <Link to={`/user/stories/${_id}/edit`}>Edit</Link>;
+    return (
+      <Link
+        style={{
+          textDecoration: "none",
+          color: "white",
+          backgroundColor: "#fde68a",
+          padding: "0.8rem 2rem",
+          borderRadius: "18px",
+        }}
+        to={`/user/stories/${_id}/edit`}
+      >
+        Edit
+      </Link>
+    );
   }
 
   renderComments = () => {

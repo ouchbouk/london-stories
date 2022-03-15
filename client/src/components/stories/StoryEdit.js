@@ -3,6 +3,17 @@ import React from "react";
 import { connect } from "react-redux";
 import { getUserStory, getAllAttractions, editStory } from "../../actions";
 import history from "../../history";
+import {
+  Input,
+  Label,
+  Container,
+  Button,
+  TextArea,
+  Select,
+  CenterText,
+  Title,
+  FlashMessage,
+} from "../styledComponents/createAttraction";
 
 class StoryEdit extends React.Component {
   state = {
@@ -32,9 +43,9 @@ class StoryEdit extends React.Component {
     let attractions = this.props.attractions;
     if (attractions) {
       return (
-        <div>
-          <label>Location</label>
-          <select
+        <div style={{ width: "45rem" }}>
+          <Label>Location</Label>
+          <Select
             onClick={(e) => {
               this.setState({ locationId: e.target.value });
             }}
@@ -46,7 +57,7 @@ class StoryEdit extends React.Component {
                 </option>
               );
             })}
-          </select>
+          </Select>
         </div>
       );
     }
@@ -54,9 +65,9 @@ class StoryEdit extends React.Component {
   renderTagsInput = () => {
     let { tagTerm, tags } = this.state;
     return (
-      <div>
-        <label>Tags</label>
-        <input
+      <div style={{ width: "45rem" }}>
+        <Label>Tags</Label>
+        <Input
           type="text"
           onChange={({ target }) => this.setState({ tagTerm: target.value })}
           value={tagTerm}
@@ -105,54 +116,66 @@ class StoryEdit extends React.Component {
   }
 
   renderEditForm() {
-    
     if (!this.props.user.loggedIn) {
       history.push("/");
     }
     if (!this.props.story) return "loading";
     let { title, body, published } = this.state;
     return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
-        <div>
-          <label>Title</label>
-          <input
-            type="text"
-            onChange={({ target }) => {
-              this.setState({ title: target.value });
-            }}
-            value={title}
-          />
-        </div>
-        <div>
-          <label>Body</label>
-          <textarea
-            type="text"
-            onChange={({ target }) => this.setState({ body: target.value })}
-            value={body}
-          />
-        </div>
-        {this.renderAttractionsDropdown()}
-        {this.renderTagsInput()}
-        <div>
-          <label>Publish</label>
-          <input
-            type="checkbox"
-            checked={published}
-            onChange={() => {
-              this.setState({ published: !published });
-            }}
-          />
-        </div>
+      <Container style={{ borderRadius: "12px" }}>
+        <form
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "2rem",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onSubmit={this.handleSubmit.bind(this)}
+        >
+          <div>
+            <Label>Title</Label>
+            <Input
+              style={{ width: "45rem", display: "block" }}
+              type="text"
+              onChange={({ target }) => {
+                this.setState({ title: target.value });
+              }}
+              value={title}
+            />
+          </div>
+          <div>
+            <Label>Body</Label>
+            <TextArea
+              style={{ width: "45rem", display: "block" }}
+              type="text"
+              onChange={({ target }) => this.setState({ body: target.value })}
+              value={body}
+            />
+          </div>
+          {this.renderAttractionsDropdown()}
+          {this.renderTagsInput()}
 
-        <button type="submit">Edit Story</button>
-      </form>
+          <div style={{ width: "45rem", display: "block" }}>
+            <Label>Publish</Label>
+            <Input
+              type="checkbox"
+              checked={published}
+              onChange={() => {
+                this.setState({ published: !published });
+              }}
+            />
+          </div>
+          <Button type="submit">Edit Story</Button>
+        </form>
+      </Container>
     );
   }
 
   render() {
     return (
       <div>
-        Edit
+        <h1 style={{ textAlign: "center", margin: "2rem" }}>Edit</h1>
         {this.renderEditForm()}
       </div>
     );

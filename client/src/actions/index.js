@@ -80,6 +80,10 @@ export const createAttraction = (values) => {
     })();
   };
 };
+export const emptyQuery = () => {
+  return { type: "QUERY", payload: "" };
+};
+
 
 export const editAttraction = (values) => {
   let { name, location, description, images, _id, deleteImages } = values;
@@ -118,9 +122,6 @@ export const getAttraction = (id) => {
   };
 };
 
-export const emptyQuery = () => {
-  return { type: "QUERY", payload: "" };
-};
 
 export const getAttractions = () => {
   return (dispatch) => {
@@ -361,7 +362,6 @@ export const createStory = (story) => {
     })();
   };
 };
-
 export const getAllStories = () => {
   return (dispatch) => {
     (async () => {
@@ -370,7 +370,6 @@ export const getAllStories = () => {
     })();
   };
 };
-
 export const getStory = (id) => {
   return (dispatch) => {
     (async () => {
@@ -379,7 +378,6 @@ export const getStory = (id) => {
     })();
   };
 };
-
 export const likeStory = (id) => {
   return (dispatch) => {
     (async () => {
@@ -388,7 +386,6 @@ export const likeStory = (id) => {
     })();
   };
 };
-
 export const dislikeStory = (id) => {
   return (dispatch) => {
     (async () => {
@@ -397,7 +394,6 @@ export const dislikeStory = (id) => {
     })();
   };
 };
-
 export const addComment = (id, comment) => {
   return (dispatch) => {
     (async () => {

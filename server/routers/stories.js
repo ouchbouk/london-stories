@@ -109,7 +109,7 @@ router.get("/stories/:id", async (req, res) => {
     if (!isValidObjectId(storyId)) return res.send("INVDALID ID");
 
     let story = await Story.findOne({ published: true, _id: req.params.id });
-    if (!story) res.send("STORY NOT FOUND");
+    if (!story) return res.send("STORY NOT FOUND");
     await story.populate("locationId");
     await story.populate("author", "username");
     await story.populate("comments.author");

@@ -86,7 +86,7 @@ class AttractionDetails extends React.Component {
     this.props.getAttraction(this.props.match.params.id);
     this.props.getStoriesByLocation(this.props);
     if (this.props.user.loggedIn) this.props.getUserAttractions();
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
   }
 
   renderScrollButtons = () => {
@@ -535,15 +535,70 @@ class AttractionDetails extends React.Component {
     if (!stories) return <div>Loading</div>;
     if (stories.length === 0) return <div>No Stories</div>;
     return (
-      <ul>
-        {stories.map(({ title, _id }, i) => {
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3,1fr)",
+          paddingBottom: "10rem",
+          alignItems: "center",
+          justifyItems: "center",
+          paddingTop: "3rem",
+        }}
+      >
+        {stories.map(({ title, _id, body }, i) => {
           return (
-            <li key={i}>
-              <Link to={`/stories/${_id}`}>{title}</Link>
-            </li>
+            <Link
+              style={{ textDecoration: "none", color: "black" }}
+              to={`/stories/${_id}`}
+            >
+              <div
+                style={{
+                  padding: "1rem",
+                  backgroundColor: "white",
+                  width: "28rem",
+                  height: "30rem",
+                  borderRadius: "12px",
+                  textAlign: "center",
+                  boxShadow: "0 0.2rem 2rem rgba(0, 0, 0, 0.15)",
+                }}
+                key={i}
+              >
+                <span
+                  style={{
+                    marginBottom: "2rem",
+                    display: "block",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {title}
+                </span>
+                <p
+                  style={{
+                    fontSize: "1.5rem",
+                    textAlign: "justify",
+                    width: "20rem",
+                    margin: "auto",
+                    marginBottom: "3rem",
+                  }}
+                >
+                  {body && body.split(/\s+/).slice(0, 50).join(" ")}...
+                </p>
+                <button
+                  style={{
+                    backgroundColor: " #065f46",
+                    color: "white",
+                    border: "none",
+                    padding: "1rem 1.5rem",
+                    borderRadius: "12px",
+                  }}
+                >
+                  Continue Reading
+                </button>
+              </div>
+            </Link>
           );
         })}
-      </ul>
+      </div>
     );
   };
 
