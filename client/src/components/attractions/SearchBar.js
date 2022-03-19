@@ -22,7 +22,7 @@ class SearchBar extends React.Component {
     return (
       <div>
         <Input
-          placeholder="Look for your next destination!!"
+          placeholder="Search"
           onChange={this.onQueryChange}
           value={this.state.query}
           type="text"

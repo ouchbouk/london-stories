@@ -2,6 +2,7 @@ import _ from "lodash";
 import React from "react";
 import { connect } from "react-redux";
 import { getUserStory, getAllAttractions, editStory } from "../../actions";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import history from "../../history";
 import {
   Input,
@@ -67,39 +68,59 @@ class StoryEdit extends React.Component {
     return (
       <div style={{ width: "45rem" }}>
         <Label>Tags</Label>
-        <Input
-          type="text"
-          onChange={({ target }) => this.setState({ tagTerm: target.value })}
-          value={tagTerm}
-        />
-        <button
-          type="button"
-          style={{ display: "inline" }}
-          onClick={() => {
-            this.setState({ tags: [...tags, tagTerm] });
-            this.setState({ tagTerm: "" });
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 8,
           }}
         >
-          Add tag
-        </button>
-        <ul>
+          <Input
+            type="text"
+            onChange={({ target }) => this.setState({ tagTerm: target.value })}
+            value={tagTerm}
+          />
+          <button
+            type="button"
+            style={{
+              border: "none",
+              backgroundColor: "#064e3b",
+              color: "white",
+              height: "52px",
+              width: "100px",
+            }}
+            onClick={() => {
+              if (tagTerm) {
+                this.setState({ tags: [...tags, tagTerm] });
+                this.setState({ tagTerm: "" });
+              }
+            }}
+          >
+            Add tag
+          </button>
+        </div>
+        <ul
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            marginTop: "12px",
+          }}
+        >
           {tags.map((tag, i) => {
             return (
               <li key={i}>
-                {tag}
                 <span
-                  style={{
-                    backgroundColor: "red",
-                    color: "white",
-                    cursor: "pointer",
-                  }}
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
                   onClick={() => {
                     let tags = this.state.tags;
                     tags.splice(i, 1);
                     this.setState({ tags });
                   }}
                 >
-                  Delete
+                  <span> {tag}</span>
+                  <AiOutlineCloseCircle style={{ cursor: "pointer" }} />
                 </span>
               </li>
             );
@@ -156,9 +177,17 @@ class StoryEdit extends React.Component {
           {this.renderAttractionsDropdown()}
           {this.renderTagsInput()}
 
-          <div style={{ width: "45rem", display: "block" }}>
+          <div
+            style={{
+              width: "45rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "50px",
+            }}
+          >
             <Label>Publish</Label>
-            <Input
+            <input
+              style={{ transform: "scale(1.5)" }}
               type="checkbox"
               checked={published}
               onChange={() => {

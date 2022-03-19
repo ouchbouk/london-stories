@@ -1,9 +1,20 @@
 import _ from "lodash";
 import React from "react";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import { connect } from "react-redux";
 import { getAllAttractions, createStory } from "../../actions";
 import history from "../../history";
-
+import {
+  Input,
+  Label,
+  Container,
+  Button,
+  TextArea,
+  Select,
+  CenterText,
+  Title,
+  FlashMessage,
+} from "../styledComponents/createAttraction";
 class CreateStory extends React.Component {
   state = {
     title: "",
@@ -36,8 +47,8 @@ class CreateStory extends React.Component {
     if (attractions) {
       return (
         <div>
-          <label>Location</label>
-          <select
+          <Label>Location</Label>
+          <Select
             onClick={(e) => {
               this.setState({ locationId: e.target.value });
             }}
@@ -49,7 +60,7 @@ class CreateStory extends React.Component {
                 </option>
               );
             })}
-          </select>
+          </Select>
         </div>
       );
     }
@@ -58,73 +69,122 @@ class CreateStory extends React.Component {
   renderTagsInput = () => {
     let { tagTerm, tags } = this.state;
     return (
-      <div>
-        <label>Tags</label>
-        <input
-          type="text"
-          onChange={({ target }) => this.setState({ tagTerm: target.value })}
-          value={tagTerm}
-        />
-        <button
-          type="button"
-          style={{ display: "inline" }}
-          onClick={() => {
-            this.setState({ tags: [...tags, tagTerm] });
-            this.setState({ tagTerm: "" });
+      <div style={{ width: "45rem" }}>
+        <Label>Tags</Label>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 8,
           }}
         >
-          Add tag
-        </button>
-        <ul>
+          <Input
+            type="text"
+            onChange={({ target }) => this.setState({ tagTerm: target.value })}
+            value={tagTerm}
+          />
+          <button
+            type="button"
+            style={{
+              border: "none",
+              backgroundColor: "#064e3b",
+              color: "white",
+              height: "52px",
+              width: "100px",
+            }}
+            onClick={() => {
+              if (tagTerm) {
+                this.setState({ tags: [...tags, tagTerm] });
+                this.setState({ tagTerm: "" });
+              }
+            }}
+          >
+            Add tag
+          </button>
+        </div>
+        <ul
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            marginTop: "12px",
+          }}
+        >
           {tags.map((tag, i) => {
-            return <li key={i}>{tag}</li>;
+            return (
+              <li key={i}>
+                <span
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                  onClick={() => {
+                    let tags = this.state.tags;
+                    tags.splice(i, 1);
+                    this.setState({ tags });
+                  }}
+                >
+                  <span> {tag}</span>
+                  <AiOutlineCloseCircle style={{ cursor: "pointer" }} />
+                </span>
+              </li>
+            );
           })}
         </ul>
       </div>
     );
   };
-
   renderStoryForm = () => {
     let { title, body, publish } = this.state;
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div>
-          <label>Title</label>
-          <input
-            type="text"
-            onChange={({ target }) => this.setState({ title: target.value })}
-            value={title}
-          />
-        </div>
-        <div>
-          <label>Body</label>
-          <textarea
-            type="text"
-            onChange={({ target }) => this.setState({ body: target.value })}
-            value={body}
-          />
-        </div>
-        {this.renderAttractionsDropdown()}
-        {this.renderTagsInput()}
-        <div>
-          <label>Publish</label>
-          <input
-            type="checkbox"
-            onChange={() => {
-              this.setState({ publish: !publish });
+      <Container style={{ borderRadius: "12px" ,marginBottom:'40px'}}>
+        <form onSubmit={this.handleSubmit}>
+          <div>
+            <Label>Title</Label>
+            <Input
+              style={{ width: "45rem", display: "block" }}
+              type="text"
+              onChange={({ target }) => {
+                this.setState({ title: target.value });
+              }}
+              value={title}
+            />
+          </div>
+          <div>
+            <Label>Body</Label>
+            <TextArea
+              type="text"
+              onChange={({ target }) => this.setState({ body: target.value })}
+              value={body}
+            />
+          </div>
+          {this.renderAttractionsDropdown()}
+          {this.renderTagsInput()}
+          <div
+             style={{
+              width: "45rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "50px",
+              marginBottom:'30px'
             }}
-          />
-          <span></span>
-        </div>
-
-        <button type="submit">Submit Story</button>
-      </form>
+          >
+            <Label>Publish</Label>
+            <input
+              style={{ transform: "scale(1.5)" }}
+              type="checkbox"
+              onChange={() => {
+                this.setState({ publish: !publish });
+              }}
+            />
+          </div>
+          <Button type="submit">Submit Story</Button>
+        </form>
+      </Container>
     );
   };
 
   render() {
     if (!this.props.user.loggedIn) {
-      history.push("/");
+      history.push("/login");
     }
     return <div>{this.renderStoryForm()}</div>;
   }

@@ -28,12 +28,10 @@ class AttractionsList extends React.Component {
   state = {
     buttonVisibilty: "",
   };
-
   componentDidMount() {
     this.props.getAttractions();
     this.props.getAttractionCount();
   }
-
   renderAttractions = () => {
     if (!this.props.attractions) return "";
     return (

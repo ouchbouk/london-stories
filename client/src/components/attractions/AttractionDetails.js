@@ -4,6 +4,7 @@ import Map from "../Map";
 import StarRatings from "react-star-ratings";
 import Modal from "react-modal";
 import { Title as AttractionNotFound } from "../styledComponents/pageNotFound";
+import storyStyles from "../../styles/story.module.css";
 
 import {
   getAttraction,
@@ -84,7 +85,7 @@ class AttractionDetails extends React.Component {
 
   componentDidMount() {
     this.props.getAttraction(this.props.match.params.id);
-    this.props.getStoriesByLocation(this.props);
+    this.props.getStoriesByLocation(this.props.match.params.id);
     if (this.props.user.loggedIn) this.props.getUserAttractions();
     // window.scrollTo(0, 0);
   }
@@ -106,7 +107,9 @@ class AttractionDetails extends React.Component {
   renderReviews = () => {
     if (this.props.attraction.reviews.length < 1) return "";
     return (
-      <Reviews>
+      <Reviews
+        style={{ margin: "auto", width: "50rem", paddingBottom: "30px" }}
+      >
         <CenterText>
           <h3 className="title">Reviews</h3>
         </CenterText>
@@ -157,7 +160,7 @@ class AttractionDetails extends React.Component {
   renderAddReview = () => {
     if (!this.props.user.loggedIn) {
       return (
-        <AddReview>
+        <AddReview style={{ margin: "auto", width: "40rem" }}>
           <Label>Log in or Signup to leave a review</Label>
 
           <LoginButton>
@@ -196,7 +199,7 @@ class AttractionDetails extends React.Component {
     };
 
     return (
-      <AddReview>
+      <AddReview style={{ margin: "auto" }}>
         <form onSubmit={handleSubmitReview} method="post">
           <div>
             <Label>How was your experience?</Label>
@@ -451,7 +454,6 @@ class AttractionDetails extends React.Component {
         averageRating,
         reviews,
       } = this.props.attraction;
-      this.props.getStoriesByLocation(_id);
       return (
         <div>
           <MainContainer>
@@ -519,8 +521,8 @@ class AttractionDetails extends React.Component {
                 <Map geocode={geocode} />
               </MapContainer>
               {this.renderAddReview()}
-              {this.renderReviews()}
             </SmallContainer>
+            {this.renderReviews()}
           </BodyContainer>
         </div>
       );
@@ -543,6 +545,7 @@ class AttractionDetails extends React.Component {
           alignItems: "center",
           justifyItems: "center",
           paddingTop: "3rem",
+          rowGap: "30px",
         }}
       >
         {stories.map(({ title, _id, body }, i) => {
@@ -552,8 +555,10 @@ class AttractionDetails extends React.Component {
               to={`/stories/${_id}`}
             >
               <div
+                className={storyStyles['story_card']}
                 style={{
                   padding: "1rem",
+                  paddingTop:'2rem',
                   backgroundColor: "white",
                   width: "28rem",
                   height: "30rem",
@@ -581,7 +586,7 @@ class AttractionDetails extends React.Component {
                     marginBottom: "3rem",
                   }}
                 >
-                  {body && body.split(/\s+/).slice(0, 50).join(" ")}...
+                  {body && body.split(/\s+/).slice(0, 45).join(" ")}...
                 </p>
                 <button
                   style={{
@@ -613,12 +618,12 @@ class AttractionDetails extends React.Component {
 }
 
 export default connect(
-  ({ attractions, user, flashMessage, stories }, ownProps) => {
+  ({ attractions, user, flashMessage, attractionStories }, ownProps) => {
     return {
       attraction: attractions[ownProps.match.params.id],
       user,
       flashMessage: flashMessage.data,
-      stories: _.values(stories),
+      stories: _.values(attractionStories),
     };
   },
   {

@@ -23,7 +23,6 @@ router.post("/stories", isLoggedIn, async (req, res) => {
   }
 });
 
-
 router.get("/stories/search", async (req, res) => {
   try {
     let { q } = req.query;
@@ -32,13 +31,13 @@ router.get("/stories/search", async (req, res) => {
         title: { $regex: q, $options: "i" },
         published: true,
       });
+      console.log(stories);
       return res.send(stories);
     }
   } catch (error) {
     res.status(500).send("SOMETHING WENT WRONG");
   }
 });
-
 
 router.get("/stories", async (req, res) => {
   try {
@@ -48,8 +47,6 @@ router.get("/stories", async (req, res) => {
     res.status(500).send("SOMETHING WENT WRONG");
   }
 });
-
-
 
 router.get("/stories/attraction/:id", async (req, res) => {
   try {
@@ -63,8 +60,6 @@ router.get("/stories/attraction/:id", async (req, res) => {
   }
 });
 
-
-
 router.get("/stories/tag/:tag", async (req, res) => {
   try {
     let tag = req.params.tag;
@@ -74,8 +69,6 @@ router.get("/stories/tag/:tag", async (req, res) => {
     res.status(500).send("SOMETHING WENT WRONG");
   }
 });
-
-
 
 router.get("/user/stories", isLoggedIn, async (req, res) => {
   try {
@@ -87,21 +80,19 @@ router.get("/user/stories", isLoggedIn, async (req, res) => {
   }
 });
 
-
-
-
 router.get("/user/:id/stories", async (req, res) => {
   try {
     let userId = req.params.id;
     if (!isValidObjectId(userId)) return res.send("INVDALID ID");
-    let stories = await Story.find({ author: userId, published: true });
+    let stories = await Story.find({
+      author: userId,
+      published: true,
+    }).populate("author","username");
     res.send(stories);
   } catch (error) {
     res.status(500).send("SOMETHING WENT WRONG");
   }
 });
-
-
 
 router.get("/stories/:id", async (req, res) => {
   try {
@@ -118,8 +109,6 @@ router.get("/stories/:id", async (req, res) => {
     res.status(500).send("SOMETHING WENT WRONG");
   }
 });
-
-
 
 router.get("/user/stories/:id", isLoggedIn, async (req, res) => {
   try {
@@ -139,8 +128,6 @@ router.get("/user/stories/:id", isLoggedIn, async (req, res) => {
     res.status(500).send("SOMETHING WENT WRONG");
   }
 });
-
-
 
 router.delete("/user/stories/:id", isLoggedIn, async (req, res) => {
   try {
@@ -182,9 +169,6 @@ router.put("/user/stories/:id", isLoggedIn, async (req, res) => {
   }
 });
 
-
-
-
 router.patch("/user/stories/:id/status", isLoggedIn, async (req, res) => {
   try {
     let storyId = req.params.id;
@@ -209,9 +193,6 @@ router.patch("/user/stories/:id/status", isLoggedIn, async (req, res) => {
     res.status(500).send("SOMETHING WENT WRONG");
   }
 });
-
-
-
 
 router.patch("/stories/:id/likes", isLoggedIn, async (req, res) => {
   try {
@@ -312,8 +293,6 @@ router.post("/stories/:id/comments", isLoggedIn, async (req, res) => {
   }
 });
 
-
-
 router.delete(
   "/stories/:id/comments/:comment_id",
   isLoggedIn,
@@ -336,7 +315,7 @@ router.delete(
         return false;
       });
       story.comments = comments;
-   
+
       await story.save();
       await story.populate("locationId");
       await story.populate("author", "username");

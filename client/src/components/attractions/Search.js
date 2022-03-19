@@ -11,6 +11,7 @@ import {
   ContinueBtn,
 } from "../styledComponents/attractionsList";
 import SearchBar from "./SearchBar";
+import styles from "../../styles/storiesList.module.css";
 
 import { MainContainer } from "../styledComponents/general";
 import { BarContainer } from "../styledComponents/search";
@@ -26,15 +27,64 @@ class Search extends React.Component {
 
   renderStories = () => {
     if (this.props.stories && this.props.stories.length === 0)
-      return (
-        <ul style={{ listStyle: "none" }}>
-          {this.props.stories.map(({ title, _id }) => (
-            <li>
-              <Link to={`/stories/${_id}`}> {title}</Link>
-            </li>
-          ))}
-        </ul>
-      );
+      console.log(this.props);
+    return (
+      <div className={styles["stories-grid"]}>
+        {this.props.stories.map(({ title, _id, body }, i) => {
+          return (
+            <div
+              style={{
+                padding: "1rem",
+                backgroundColor: "white",
+                width: "28rem",
+                height: "30rem",
+                borderRadius: "12px",
+                textAlign: "center",
+                boxShadow: "0 0.2rem 2rem rgba(0, 0, 0, 0.15)",
+              }}
+              key={i}
+            >
+              <Link
+                style={{ textDecoration: "none", color: "black" }}
+                to={`/stories/${_id}`}
+              >
+                <span
+                  style={{
+                    marginBottom: "2rem",
+                    display: "block",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {title}
+                </span>
+                <p
+                  style={{
+                    fontSize: "1.5rem",
+                    textAlign: "justify",
+                    width: "20rem",
+                    margin: "auto",
+                    marginBottom: "3rem",
+                  }}
+                >
+                  {body && body.split(/\s+/).slice(0, 45).join(" ")}...
+                </p>
+                <button
+                  style={{
+                    backgroundColor: " #065f46",
+                    color: "white",
+                    border: "none",
+                    padding: "1rem 1.5rem",
+                    borderRadius: "12px",
+                  }}
+                >
+                  Continue Reading
+                </button>
+              </Link>
+            </div>
+          );
+        })}
+      </div>
+    );
   };
 
   renderAttractions = () => {
@@ -96,7 +146,15 @@ class Search extends React.Component {
           <Title>Search</Title>
         </CenterText>
         <BarContainer>
-          <div style={{ display: "flex", marginBottom: "12px", gap: "20px" }}>
+          <SearchBar searchBy={this.state.searchBy} />
+          <div
+            style={{
+              display: "flex",
+              margin: "12px",
+              gap: "20px",
+              justifyContent: "center",
+            }}
+          >
             <div>
               <label style={{ marginRight: "8px" }}>Attraction</label>
               <input
@@ -120,7 +178,6 @@ class Search extends React.Component {
               />
             </div>
           </div>
-          <SearchBar searchBy={this.state.searchBy} />
         </BarContainer>
 
         <div>
@@ -133,11 +190,11 @@ class Search extends React.Component {
 }
 
 export default connect(
-  ({ attractionsSearchResults, query, stories }) => {
+  ({ attractionsSearchResults, query, searchStories }) => {
     return {
       attractions: _.values(attractionsSearchResults),
       query,
-      stories: _.values(stories),
+      stories: _.values(searchStories),
     };
   },
   { searchAttractions, searchStories }

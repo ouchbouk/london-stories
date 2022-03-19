@@ -7,6 +7,10 @@ import AttractionCountReducer from "./AttractionCountReducer";
 import flashMessageReducer from "./flashMessageReducer";
 import queryReducer from "./queryReducer";
 import storiesReducer from "./storiesReducer";
+import attractionStories from "./attractionStories";
+import searchStories from "./searchStories";
+import storiesTag from "./storiesTag";
+import userStories from "./userStories";
 
 export default combineReducers({
   user,
@@ -17,4 +21,8 @@ export default combineReducers({
   flashMessage: flashMessageReducer,
   query: queryReducer,
   stories: storiesReducer,
+  attractionStories,
+  searchStories,
+  storiesTag: storiesTag,
+  userStories,
 });

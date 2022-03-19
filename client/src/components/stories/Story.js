@@ -30,11 +30,15 @@ class Story extends React.Component {
     return (
       <Link
         style={{
+          margin: "auto",
           textDecoration: "none",
           color: "white",
           backgroundColor: "#fde68a",
           padding: "0.8rem 2rem",
           borderRadius: "18px",
+          marginBottom: "20px",
+          width: 75,
+          display: "block",
         }}
         to={`/user/stories/${_id}/edit`}
       >
@@ -84,7 +88,7 @@ class Story extends React.Component {
 
   render() {
     let story = this.props.story;
-    if (!story) return "LOADING...";
+    if (!story) return <div />;
     let {
       title,
       body,
@@ -99,7 +103,6 @@ class Story extends React.Component {
 
     return (
       <div style={{ width: "80%", margin: "0 auto" }}>
-        {this.renderEditButton(author._id, _id)}
         <h1 className={styles["title"]}>{title}</h1>
         <p style={{ textAlign: "center", fontSize: "1.1rem" }}>
           By{" "}
@@ -118,15 +121,25 @@ class Story extends React.Component {
             {location.name}
           </Link>
         </p>
-        <ul className={styles[`tags-list`]}>
+        <div style={{ display: "flex", justifyContent: "center" }}></div>
+
+        <div
+          style={{
+            listStyle: "none",
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "20px",
+          }}
+        >
           {tags.map((tag, i) => (
-            <li key={i}>
+            <span key={i}>
               <Link className={styles[`tag`]} to={`/stories/tag/${tag}`}>
                 {tag}
               </Link>
-            </li>
+            </span>
           ))}
-        </ul>
+        </div>
+        {this.renderEditButton(author._id, _id)}
         <p className={styles["story-body"]}>{body}</p>
         <div
           style={{
@@ -156,8 +169,9 @@ class Story extends React.Component {
         </div>
         <div>
           {/* <label style={{ display: "block" }}>Comment:</label> */}
-          <div style={{ width: "30rem", margin: "auto" }}>
+          <div style={{ width: "50rem", margin: "auto" ,marginBottom:'5rem'}}>
             <textarea
+              style={{ marginBottom: "20px", height: "10rem" }}
               className={styles[`comment-area`]}
               value={this.state.comment}
               onChange={(e) => {
@@ -170,7 +184,7 @@ class Story extends React.Component {
                 this.props.addComment(_id, this.state.comment);
                 this.setState({ comment: "" });
               }}
-              style={{ display: "block" }}
+              style={{ display: "block", width: "100px", margin: "auto" }}
             >
               Submit
             </button>

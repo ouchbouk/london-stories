@@ -4,6 +4,7 @@ import { getAllStories } from "../../actions";
 import _ from "lodash";
 import styles from "../../styles/storiesList.module.css";
 import { Link } from "react-router-dom";
+import storyStyles from "../../styles/story.module.css";
 
 class StoriesList extends React.Component {
   state = {
@@ -83,8 +84,10 @@ class StoriesList extends React.Component {
     if (stories.length === 0) return <div>No Stories</div>;
     return (
       <div>
-        <div>
+        <h1 className={styles["page_title"]}>Stories</h1>
+        <div style={{ position: "relative", backgroundColor: "red" }}>
           <select
+            className={styles["select_sorting"]}
             onChange={(e) => {
               this.sort(e.target.value);
             }}
@@ -100,11 +103,58 @@ class StoriesList extends React.Component {
           </select>
         </div>
         <div className={styles["stories-grid"]}>
-          {stories.map(({ title, _id }) => {
+          {stories.map(({ title, _id, body }, i) => {
             return (
-              <Link to={`/stories/${_id}`} key={_id}>
-                {title}
-              </Link>
+              <div
+                className={storyStyles["story_card"]}
+                style={{
+                  padding: "2rem",
+                  backgroundColor: "white",
+                  width: "28rem",
+                  height: "30rem",
+                  borderRadius: "12px",
+                  textAlign: "center",
+                  boxShadow: "0 0.2rem 2rem rgba(0, 0, 0, 0.15)",
+                }}
+                key={i}
+              >
+                <Link
+                  style={{ textDecoration: "none", color: "black" }}
+                  to={`/stories/${_id}`}
+                >
+                  <span
+                    style={{
+                      marginBottom: "2rem",
+                      display: "block",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {title}
+                  </span>
+                  <p
+                    style={{
+                      fontSize: "1.5rem",
+                      textAlign: "justify",
+                      width: "20rem",
+                      margin: "auto",
+                      marginBottom: "3rem",
+                    }}
+                  >
+                    {body && body.split(/\s+/).slice(0, 45).join(" ")}...
+                  </p>
+                  <button
+                    style={{
+                      backgroundColor: "#065f46",
+                      color: "white",
+                      border: "none",
+                      padding: "1rem 1.5rem",
+                      borderRadius: "12px",
+                    }}
+                  >
+                    Continue Reading
+                  </button>
+                </Link>
+              </div>
             );
           })}
         </div>

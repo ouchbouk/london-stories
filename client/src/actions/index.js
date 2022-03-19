@@ -84,7 +84,6 @@ export const emptyQuery = () => {
   return { type: "QUERY", payload: "" };
 };
 
-
 export const editAttraction = (values) => {
   let { name, location, description, images, _id, deleteImages } = values;
   let fd = new FormData();
@@ -121,7 +120,6 @@ export const getAttraction = (id) => {
     })();
   };
 };
-
 
 export const getAttractions = () => {
   return (dispatch) => {
@@ -416,12 +414,11 @@ export const deteteStoryComment = ({ commentId, sotryId }) => {
   };
 };
 
-
 export const getUserStories = (id) => {
   return (dispatch) => {
     (async () => {
       let { data } = await instance.get(`/user/${id}/stories`);
-      dispatch({ type: "GET_STORIES", payload: data });
+      dispatch({ type: "USER_STORIES", payload: data });
     })();
   };
 };
@@ -449,7 +446,7 @@ export const getStoriesByTag = (tag) => {
   return (dispatch) => {
     (async () => {
       let { data } = await instance.get(`/stories/tag/${tag}`);
-      dispatch({ type: "GET_STORIES", payload: data });
+      dispatch({ type: "STORIES_TAG", payload: data });
     })();
   };
 };
@@ -458,7 +455,7 @@ export const searchStories = (query) => {
   return (dispatch) => {
     (async () => {
       let { data } = await instance.get(`/stories/search?q=${query}`);
-      dispatch({ type: "GET_STORIES", payload: data });
+      dispatch({ type: "SEARCH_STORIES", payload: data });
     })();
   };
 };
@@ -467,8 +464,8 @@ export const getStoriesByLocation = (locationId) => {
   return (dispatch) => {
     (async () => {
       let { data } = await instance.get(`/stories/attraction/${locationId}`);
-      dispatch({ type: "GET_STORIES", payload: data });
+      console.log("here");
+      dispatch({ type: "ATTRACTION_STORIES", payload: data });
     })();
   };
 };
-

@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { getStoriesByTag } from "../../actions";
 import _ from "lodash";
 import { Link } from "react-router-dom";
+import storyStyles from "../../styles/story.module.css";
+import styles from "../../styles/storiesList.module.css";
 
 class StoriesTag extends React.Component {
   componentDidMount() {
@@ -10,17 +12,64 @@ class StoriesTag extends React.Component {
   }
 
   renderStories() {
-    if (!this.props.stories) return <div>Loading</div>;
+    if (!this.props.stories) return <div/>;
     return (
-      <ul>
-        {this.props.stories.map(({ title, _id }, i) => {
+      <div className={styles["stories-grid"]}>
+        {this.props.stories.map(({ title, _id, body }, i) => {
           return (
-            <li key={i}>
-              <Link to={`/stories/${_id}`}>{title}</Link>
-            </li>
+            <div
+              className={storyStyles["story_card"]}
+              style={{
+                padding: "1rem",
+                backgroundColor: "white",
+                width: "28rem",
+                height: "30rem",
+                borderRadius: "12px",
+                textAlign: "center",
+                boxShadow: "0 0.2rem 2rem rgba(0, 0, 0, 0.15)",
+              }}
+              key={i}
+            >
+              <Link
+                style={{ textDecoration: "none", color: "black" }}
+                to={`/stories/${_id}`}
+              >
+                <span
+                  style={{
+                    marginBottom: "2rem",
+                    display: "block",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {title}
+                </span>
+                <p
+                  style={{
+                    fontSize: "1.5rem",
+                    textAlign: "justify",
+                    width: "20rem",
+                    margin: "auto",
+                    marginBottom: "3rem",
+                  }}
+                >
+                  {body && body.split(/\s+/).slice(0, 45).join(" ")}...
+                </p>
+                <button
+                  style={{
+                    backgroundColor: "#065f46",
+                    color: "white",
+                    border: "none",
+                    padding: "1rem 1.5rem",
+                    borderRadius: "12px",
+                  }}
+                >
+                  Continue Reading
+                </button>
+              </Link>
+            </div>
           );
         })}
-      </ul>
+      </div>
     );
   }
 
@@ -35,8 +84,8 @@ class StoriesTag extends React.Component {
 }
 
 export default connect(
-  ({ stories }) => {
-    return { stories: _.values(stories) };
+  ({ StoriesTag }) => {
+    return { stories: _.values(StoriesTag) };
   },
   { getStoriesByTag }
 )(StoriesTag);

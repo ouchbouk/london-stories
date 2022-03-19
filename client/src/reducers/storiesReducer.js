@@ -6,7 +6,7 @@ function storiesReducer(state = {}, { type, payload }) {
       return { ...state, [payload._id]: payload };
 
     case "GET_STORIES":
-      return { ..._.mapKeys(payload, "_id") };
+      return { ...state,..._.mapKeys(payload, "_id") };
 
     case "GET_STORY":
       return { ...state, [payload._id]: payload };

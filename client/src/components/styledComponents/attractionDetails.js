@@ -25,7 +25,7 @@ export const Header = styled.div`
 
 export const Title = styled.h1`
   font-size: 4.8rem;
-  color: #065f46;
+
   position: relative;
   .location {
     font-size: 2rem;
