@@ -460,7 +460,7 @@ class AttractionDetails extends React.Component {
             {this.renderImageModal()}
             <Header>
               <TitleContainer>
-                <Title>
+                <Title >
                   {name} <p className="location">{location}</p>
                   {this.props.flashMessage && (
                     <FlashMessage>{this.props.flashMessage}</FlashMessage>
@@ -534,7 +534,7 @@ class AttractionDetails extends React.Component {
   renderStories = () => {
     let stories = this.props.stories;
 
-    if (!stories) return <div>Loading</div>;
+    if (!stories) return <div/>;
     if (stories.length === 0) return <div>No Stories</div>;
     return (
       <div
@@ -583,7 +583,7 @@ class AttractionDetails extends React.Component {
                     textAlign: "justify",
                     width: "20rem",
                     margin: "auto",
-                    marginBottom: "3rem",
+                    marginBottom: "2rem",
                   }}
                 >
                   {body && body.split(/\s+/).slice(0, 45).join(" ")}...

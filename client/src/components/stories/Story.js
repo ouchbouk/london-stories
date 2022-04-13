@@ -10,13 +10,16 @@ import {
   deteteStoryComment,
 } from "../../actions";
 import {
+  AddReview,
   Author,
-  CenterText,
   DeleteButton,
   Face,
+  LoginButton,
+  RegisterButton,
   Review,
   Reviews,
 } from "../styledComponents/attractionDetails";
+import { Label, Title } from "../styledComponents/createAttraction";
 
 class Story extends React.Component {
   state = {
@@ -103,7 +106,7 @@ class Story extends React.Component {
 
     return (
       <div style={{ width: "80%", margin: "0 auto" }}>
-        <h1 className={styles["title"]}>{title}</h1>
+        <Title className={styles["title"]} style={{margin:'1rem'}}>{title}</Title>
         <p style={{ textAlign: "center", fontSize: "1.1rem" }}>
           By{" "}
           <Link className={styles["author"]} to={`/user/${author._id}/stories`}>
@@ -129,6 +132,7 @@ class Story extends React.Component {
             display: "flex",
             justifyContent: "center",
             marginBottom: "20px",
+            gap:'10px'
           }}
         >
           {tags.map((tag, i) => (
@@ -156,7 +160,7 @@ class Story extends React.Component {
               this.props.likeStory(_id);
             }}
           >
-            {likes.length} Like
+           {likes.length} { likes.length>1 ||likes.length===0?'Likes':'Like'} 
           </button>
           <button
             className={styles["button"]}
@@ -164,12 +168,12 @@ class Story extends React.Component {
               this.props.dislikeStory(_id);
             }}
           >
-            {dislikes.length} Dislike
-          </button>
+   {dislikes.length} { dislikes.length>1 ||dislikes.length===0?'Dislikes':'Dislike'}        </button>
         </div>
         <div>
-          {/* <label style={{ display: "block" }}>Comment:</label> */}
-          <div style={{ width: "50rem", margin: "auto" ,marginBottom:'5rem'}}>
+          {
+            this.props.user.loggedIn?
+            <div style={{ width: "50rem", margin: "auto" ,marginBottom:'5rem'}}>
             <textarea
               style={{ marginBottom: "20px", height: "10rem" }}
               className={styles[`comment-area`]}
@@ -188,7 +192,23 @@ class Story extends React.Component {
             >
               Submit
             </button>
+          </div>:<AddReview style={{ margin: "auto", width: "40rem" }}>
+          <Label style={{marginBottom:'30px'}}>Log in or Signup to leave a review</Label>
+
+          <div style={{width:'320px',margin:'auto',marginBottom:'30px',display:'felx'}}>
+          <LoginButton>
+            <Link className="link" to="/login">
+              Login
+            </Link>
+          </LoginButton>
+          <RegisterButton>
+            <Link className="link" to="/register">
+              SIGN UP
+            </Link>
+          </RegisterButton>
           </div>
+        </AddReview>
+      }
         </div>
         {this.renderComments()}
         {/* <ul>

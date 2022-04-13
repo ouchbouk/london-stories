@@ -53,7 +53,7 @@ class Create extends React.Component {
     _.debounce(() => {
       this.props.getAdresses(this.state.term);
       if (this.props.addresses.length === 0) {
-        this.setState({ locationError: "It must be a valid UK address" });
+        // this.setState({ locationError: "It must be a valid UK address" });
       } else {
         this.setState({ locationError: "" });
       }

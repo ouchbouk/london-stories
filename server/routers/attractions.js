@@ -112,7 +112,7 @@ router.put(
 
 router.get("/attractions", async (req, res) => {
   try {
-    let attractions = await Attraction.find({}).limit(8);
+    let attractions = await Attraction.find({});
     res.send(attractions);
   } catch (error) {
     res.status(500).send("SOMETHING WENT WRONG");

@@ -186,7 +186,9 @@ class CreateStory extends React.Component {
     if (!this.props.user.loggedIn) {
       history.push("/login");
     }
-    return <div>{this.renderStoryForm()}</div>;
+    return <div>
+        <Title style={{textAlign:'center'}}>Create Story</Title>
+      {this.renderStoryForm()}</div>;
   }
 }
 
@@ -196,3 +198,4 @@ export default connect(
   },
   { getAllAttractions, createStory }
 )(CreateStory);
+

@@ -5,11 +5,12 @@ import _ from "lodash";
 import { Link } from "react-router-dom";
 import storyStyles from "../../styles/story.module.css";
 import styles from "../../styles/storiesList.module.css";
+import { Title } from "../styledComponents/createAttraction";
 
 class StoriesTag extends React.Component {
   componentDidMount() {
     this.props.getStoriesByTag(this.props.match.params.tag);
-  }
+    }
 
   renderStories() {
     if (!this.props.stories) return <div/>;
@@ -21,6 +22,7 @@ class StoriesTag extends React.Component {
               className={storyStyles["story_card"]}
               style={{
                 padding: "1rem",
+                paddingTop:'1.8rem',
                 backgroundColor: "white",
                 width: "28rem",
                 height: "30rem",
@@ -76,7 +78,7 @@ class StoriesTag extends React.Component {
   render() {
     return (
       <div>
-        Stories
+       <Title style={{textAlign:'center'}}> <span style={{textTransform:'uppercase',}}>{this.props.match.params.tag} </span> Stories</Title>
         {this.renderStories()}
       </div>
     );
@@ -84,8 +86,9 @@ class StoriesTag extends React.Component {
 }
 
 export default connect(
-  ({ StoriesTag }) => {
-    return { stories: _.values(StoriesTag) };
+  ({ storiesTag }) => {
+    console.log(storiesTag)
+    return { stories: _.values(storiesTag) };
   },
   { getStoriesByTag }
 )(StoriesTag);

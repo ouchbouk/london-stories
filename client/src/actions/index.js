@@ -319,7 +319,7 @@ export const getAdresses = (term) => {
   return (dispatch) => {
     (async () => {
       let { data } = await axios.get(
-        `https://api.getaddress.io/autocomplete/${term}?expand=true&api-key=${process.env.REACT_APP_ADDRESS_API_KEY} `
+        `https://api.getaddress.io/autocomplete/${term}?expand=true&api-key=t6HEkG_uxU2LWXu4gmnrfg34909`
       );
 
       dispatch({ type: "GET_ADDRESSES", payload: data.suggestions });

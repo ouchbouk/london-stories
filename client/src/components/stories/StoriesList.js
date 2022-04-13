@@ -137,7 +137,7 @@ class StoriesList extends React.Component {
                       textAlign: "justify",
                       width: "20rem",
                       margin: "auto",
-                      marginBottom: "3rem",
+                      marginBottom: "2.5rem",
                     }}
                   >
                     {body && body.split(/\s+/).slice(0, 45).join(" ")}...

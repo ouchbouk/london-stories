@@ -57,7 +57,7 @@ class Edit extends React.Component {
       this.props.getAdresses(this.state.term);
       console.log(this.props.addresses);
       if (this.props.addresses.length === 0) {
-        this.setState({ locationError: "It must be a valid UK address" });
+        // this.setState({ locationError: "It must be a valid UK address" });
       } else {
         this.setState({ locationError: "" });
       }
